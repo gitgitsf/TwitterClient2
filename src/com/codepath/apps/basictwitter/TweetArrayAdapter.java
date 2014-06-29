@@ -1,8 +1,12 @@
 package com.codepath.apps.basictwitter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,17 +38,34 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		ImageView ivProfileImage = (ImageView) v.findViewById(R.id.ivProfileImage);
 		TextView tvUserName = (TextView) v.findViewById(R.id.tvUserName);
 		TextView tvBody = (TextView) v.findViewById(R.id.tvBody);
-//		TextView tvName = (TextView) v.findViewById(R.id.tvName);
-//		TextView tvTimeStamp = (TextView) v.findViewById(R.id.tvTimeStamp);
+		TextView tvName = (TextView) v.findViewById(R.id.tvName);
+		TextView tvTimeStamp = (TextView) v.findViewById(R.id.tvTimeStamp);
 		ivProfileImage.setImageResource(android.R.color.transparent);
 		ImageLoader imageLoader = ImageLoader.getInstance();
 		// Populate views with tweet data
 		imageLoader.displayImage(tweet.getUser().getProfileImageUrl(), ivProfileImage);
-		tvUserName.setText("@" + tweet.getUser().getScreenName());
-//		tvName.setText(tweet.getUser().getName());
+		tvName.setText(tweet.getUser().getName());
+		tvUserName.setText("  @" + tweet.getUser().getScreenName());
+		tvTimeStamp.setText(" . " + getRelativeTimeAgo(tweet.getCreatedAt()));
 		tvBody.setText(tweet.getBody());
 		return v;
 	}
 	
-	
+	// getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
+	public String getRelativeTimeAgo(String rawJsonDate) {
+		String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+		SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+		sf.setLenient(true);
+	 
+		String relativeDate = "";
+		try {
+			long dateMillis = sf.parse(rawJsonDate).getTime();
+			relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+					System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}  
+	 
+		return relativeDate;
+	}
 }

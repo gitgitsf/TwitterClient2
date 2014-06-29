@@ -10,5 +10,6 @@
     <string name="foo_label">\@foo</string>
     <string name="name_label">Name</string>
     <string name="time_stamp_label">5 h</string>
+    <string name="body_label">This is the tweet body</string>
 
 </resources>
