@@ -44,7 +44,7 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
 	public void getHomeTimeline(long sinceId, long maxId, AsyncHttpResponseHandler handler) {
-		Log.d("debug", "getHomeTimeline() - TwitterClient.java");
+		Log.d("debug", "getHomeTimeline() 2 - TwitterClient.java");
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		RequestParams params = new RequestParams();
 		String strSinceId="";
@@ -55,8 +55,18 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("since_id", "1");
 		params.put("max_id", strMaxId);
 		client.get(apiUrl, params, handler);
-		Log.d("debug", "getHomeTimeline()- aft client.get");
 	}
+	
+	// post a new tweet to Twitter
+	public void postUpdate(String myNewTweet, AsyncHttpResponseHandler handler) {
+		Log.d("debug", "postUpdate() - TwitterClient.java");
+		String apiUrl = getApiUrl("statuses/update.json");
+		RequestParams params = new RequestParams();
+		params.put("status", myNewTweet);
+		client.post(apiUrl, params, handler);
+		Log.d("debug", "postUpdate()- aft client.get");
+	}
+	
 	
 	// CHANGE THIS
 	// DEFINE METHODS for different API endpoints here

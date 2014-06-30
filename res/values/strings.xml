@@ -7,9 +7,14 @@
     <string name="title_activity_photos">Flickr Photos</string>
     <string name="login_label">Connect to Twitter</string>
     <string name="title_activity_timeline">TimelineActivity</string>
+    <string name="title_activity_composetweet">ComposeTweetActivity</string>
     <string name="foo_label">\@foo</string>
     <string name="name_label">Name</string>
     <string name="time_stamp_label">5 h</string>
     <string name="body_label">This is the tweet body</string>
+    <string name="tweet_label">Tweet</string>
+    <string name="action_compose_tweet">Compose tweet</string>
+    <string name="new_tweet_hint">new tweet</string>
+    
 
 </resources>

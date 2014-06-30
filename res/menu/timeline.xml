@@ -1,6 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    
     <!-- Twitter compose icon, should appear as action button -->
     <item android:id="@+id/action_compose_tweet"
           android:icon="@drawable/ic_action_compose_tweet"

@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+     
+    
+      <EditText
+        android:id="@+id/etComposeTweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textSize="12sp"
+        android:lines="4"
+        android:maxLines="4"
+        android:hint="@string/new_tweet_hint"
+         />
+
+     
+       <TextView
+        android:id="@+id/tvNbrChar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="20dp"
+         android:layout_below="@+id/etComposeTweet"
+        android:text="140" />
+       
+       <Button
+        android:id="@+id/btnTweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/tvNbrChar"
+        android:onClick="postNewTweet"
+         android:layout_below="@+id/etComposeTweet"
+        android:text="@string/tweet_label" />
+ 
+
+  
+
+</RelativeLayout>
