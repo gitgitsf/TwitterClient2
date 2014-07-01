@@ -4,7 +4,10 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,13 +15,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.codepath.apps.basictwitter.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 
 public class ComposeTweetActivity extends Activity {
 
 	private static final String TAG = "ComposeTweetActivity";
+	private static final int MAX_LENGTH = 140;
+	
 	private EditText etComposeTweet;
 	private TextView tvNbrChar;
 	private Button btnTweet;
@@ -29,13 +33,50 @@ public class ComposeTweetActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_compose_tweet);
-		etComposeTweet = (EditText) findViewById(R.id.etComposeTweet);
-		client = TwitterApp.getRestClient();
-		tvNbrChar = (TextView) findViewById(R.id.tvNbrChar);	
-		btnTweet = (Button) findViewById(R.id.btnTweet);
-        
+	 
+        setup();
+        displayNumberOfCharsEnter();
         
 	}
+	
+	private void setup() {
+		etComposeTweet = (EditText) findViewById(R.id.etComposeTweet);
+		tvNbrChar = (TextView) findViewById(R.id.tvNbrChar);	
+		btnTweet = (Button) findViewById(R.id.btnTweet);
+		
+		client = TwitterApp.getRestClient();
+	}
+	
+	private void displayNumberOfCharsEnter() {
+		etComposeTweet.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				if ( s.length() >= 140) {
+					Toast.makeText(ComposeTweetActivity.this, "You've reached the 140 character"
+							+ " limit", Toast.LENGTH_LONG).show(); 
+					tvNbrChar.setText(MAX_LENGTH - s.length() + " left"); 
+				}
+				else {
+					tvNbrChar.setText(MAX_LENGTH - s.length() + " left"); 
+//					tvNbrChar.setText(MAX_LENGTH + "-" + s.length() + " = " +  
+//							(MAX_LENGTH - s.length()) + " left"); 
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+			@Override
+			public void afterTextChanged(Editable s) { }
+		});
+
+	}
+	
+	
+	
+	
+	
+	// handle the Tweet button, see xml for method name
 	public void postNewTweet(View v) {
 		Log.d(TAG, "postNewTweet(View v)");
 		int charLeft =  (etComposeTweet.getText().toString()).length();
@@ -66,9 +107,15 @@ public class ComposeTweetActivity extends Activity {
         	@Override
         	public void onSuccess(int statusCode, JSONObject jsonTweetResponse) {
 				Log.d("DEBUG", "Called onSuccess() in ComposeTweet."); 
-//				Log.d("debug", " jsonTweetResponse===" +jsonTweetResponse.toString());
-				Intent i = new Intent(getApplicationContext(), TimelineActivity.class);
-	            startActivity(i);
+				//Intent i = new Intent(getApplicationContext(), TimelineActivity.class);
+	            //startActivity(i);
+				// when return to TimelineActivity.java to see the new tweet, it is better
+				// to have TimelineActivity to start intent with result and have this activity
+				// return with result.
+	            Intent i = new Intent();
+				i.putExtra("myNewTweet", "is posted successful");
+				setResult(RESULT_OK, i);
+				finish(); 
 			}	
 
         	@Override

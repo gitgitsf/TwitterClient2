@@ -3,6 +3,8 @@ package com.codepath.apps.basictwitter;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.basictwitter.models.Tweet;
@@ -19,6 +22,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class TimelineActivity extends Activity {
 	
+	private static final int GET_RESULT_TEXT = 10;
 	private TwitterClient client;
 	private ArrayList<Tweet> tweets;
 	private ArrayAdapter<Tweet> aTweets;
@@ -70,11 +74,11 @@ public class TimelineActivity extends Activity {
 		Log.d("debug", "populateTimeline()- TimelineActivity.java");
         client.getHomeTimeline(sinceId, maxId, new JsonHttpResponseHandler() {
         	@Override
-        	public void onSuccess(int arg0, JSONArray json) {
-        		super.onSuccess(arg0, json);
-        		aTweets.addAll(Tweet.fromJSONArray(json));
+        	public void onSuccess(int arg0, JSONArray jsonArray) {
+        		super.onSuccess(arg0, jsonArray);
+        		aTweets.addAll(Tweet.fromJSONArray(jsonArray));
         		Log.d("debug", "arg0=" + arg0);
-		        Log.d("debug", json.toString());
+		        Log.d("debug", jsonArray.toString());
         	}
         	
         	@Override
@@ -121,16 +125,25 @@ public class TimelineActivity extends Activity {
 		    // Handle presses on the action bar items
 		    switch (item.getItemId()) {
 		        case R.id.action_compose_tweet:
-		            //openSearch();
-		        	Toast.makeText(getApplicationContext(), "new tweet", Toast.LENGTH_SHORT).show();
-		            Intent i = new Intent(getApplicationContext(), ComposeTweetActivity.class);
-		            startActivity(i);
+		            startActivityForResult(
+		  				  new Intent(TimelineActivity.this, ComposeTweetActivity.class), 
+		  				    GET_RESULT_TEXT);
+		            
 		        	return true;
 		        case R.id.action_settings:
-//		            openSettings();
 		            return true;
 		        default:
 		            return super.onOptionsItemSelected(item);
 		    }
+		}
+		
+		// Handle the result once the activity returns a result, display contact
+		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+			if (requestCode == 0) {
+				if (resultCode == RESULT_OK) {
+					String returnData = data.getStringExtra("myNewTweet");
+					Toast.makeText(this, returnData, Toast.LENGTH_SHORT).show();
+				}
+			}
 		}
 }
