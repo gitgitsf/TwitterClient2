@@ -66,7 +66,7 @@ public class ComposeTweetActivity extends Activity {
         	@Override
         	public void onSuccess(int statusCode, JSONObject jsonTweetResponse) {
 				Log.d("DEBUG", "Called onSuccess() in ComposeTweet."); 
-				Log.d("debug", " jsonTweetResponse===" +jsonTweetResponse.toString());
+//				Log.d("debug", " jsonTweetResponse===" +jsonTweetResponse.toString());
 				Intent i = new Intent(getApplicationContext(), TimelineActivity.class);
 	            startActivity(i);
 			}	
