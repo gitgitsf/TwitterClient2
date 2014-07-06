@@ -51,6 +51,10 @@
             android:name="com.codepath.apps.basictwitter.ComposeTweetActivity"
             android:label="@string/title_activity_composetweet" >
         </activity>
+        <activity
+            android:name="com.codepath.apps.basictwitter.ProfileActivity"
+            android:label="@string/title_activity_Profile" >
+        </activity>
     </application>
 
 </manifest>

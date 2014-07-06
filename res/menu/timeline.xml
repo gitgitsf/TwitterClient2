@@ -6,11 +6,11 @@
           android:title="@string/action_compose_tweet"
           android:showAsAction="ifRoom" />
     
-    <!-- Settings, should always be in the overflow -->
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+    <item android:id="@+id/action_profile"
+          android:icon="@drawable/ic_profile"
+          android:title="@string/title_activity_Profile"
+          android:onClick="onProifleView"
+          android:showAsAction="ifRoom" />
+    
 
 </menu>

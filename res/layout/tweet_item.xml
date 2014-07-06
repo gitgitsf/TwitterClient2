@@ -8,6 +8,8 @@
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:onClick="onListItemClick"
+        android:contentDescription="Profile Image"
         android:src="@drawable/ic_launcher" />
     
       <TextView

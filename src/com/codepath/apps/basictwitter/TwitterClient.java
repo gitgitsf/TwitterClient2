@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 /*
@@ -57,8 +58,33 @@ public class TwitterClient extends OAuthBaseClient {
 		client.get(apiUrl, params, handler);
 	}
 	
+	public void getMentionTimeline(AsyncHttpResponseHandler handler) {
+		Log.d("debug", "getMentionTimeline()  - TwitterClient.java");
+		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+		RequestParams params = new RequestParams();
+		String strMaxId="1";
+//		params.put("since_id", "1");
+//		params.put("max_id", strMaxId);
+//		client.get(apiUrl, params, handler);  //not work
+		client.get(apiUrl, null, handler); //works
+		
+	}
+	
+	public void getMyInfo(AsyncHttpResponseHandler handler) {
+		Log.d("debug", "getMyInfo()  - TwitterClient.java");
+		String apiUrl = getApiUrl("account/verify_credentials.json");
+		client.get(apiUrl, null, handler);  
+		
+	}
+	public void getUserTimeline(AsyncHttpResponseHandler handler) {
+		Log.d("debug", "getUserTimeline()  - TwitterClient.java");
+		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		client.get(apiUrl, null, handler);  
+		
+	}
+	
 	// post a new tweet to Twitter
-	public void postUpdate(String myNewTweet, AsyncHttpResponseHandler handler) {
+	public void postUpdate(String myNewTweet, AsyncHttpResponseHandler handler){
 		Log.d("debug", "postUpdate() - TwitterClient.java");
 		String apiUrl = getApiUrl("statuses/update.json");
 		RequestParams params = new RequestParams();
@@ -66,6 +92,9 @@ public class TwitterClient extends OAuthBaseClient {
 		client.post(apiUrl, params, handler);
 		Log.d("debug", "postUpdate()- aft client.get");
 	}
+
+
+	
 	
 	
 	// CHANGE THIS
