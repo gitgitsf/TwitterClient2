@@ -1,5 +1,7 @@
 package com.codepath.apps.basictwitter;
 
+
+
 import org.json.JSONObject;
 
 import android.os.Bundle;
@@ -7,30 +9,60 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.codepath.apps.basictwitter.fragments.TweetsListFragment.OnFragmentTweetsListItemSelectedListener;
+import com.codepath.apps.basictwitter.fragments.UserTimelineFragment.OnProfileChangedListener;
 import com.codepath.apps.basictwitter.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class ProfileActivity extends FragmentActivity {
+public class ProfileActivity extends FragmentActivity 
+      implements OnFragmentTweetsListItemSelectedListener, OnProfileChangedListener  {
+	
+	private final String TAG = "ProfileActivity";
+	
+	User mUser;
 
 	@Override
 	protected void onCreate(Bundle saveInstBundle) {
 		super.onCreate(saveInstBundle);
-		Log.d("debug", "onCreate()  - ProfileActivity.java");
+		Log.d("debug", "onCreate()  - " + TAG);
 		setContentView(R.layout.activity_profile);
+		
+		checkForAnotherTwitterUser();
 		loadProfile();
+		
+//		populateProifleHeader(mUser);
+	}
+	
+	
+	private void checkForAnotherTwitterUser() {
+		Log.d("debug", "checkForAnotherTwitterUser()  - " + TAG);
+		
+		User tweetUser = (User) getIntent().getSerializableExtra("selected_tweet_user"); 
+		if (tweetUser != null) {
+			Log.d("debug", " selected user prifile is passed  -  " + TAG);
+			mUser = tweetUser;
+			getActionBar().setTitle("@" +  mUser.getScreenName());
+			populateProifleHeader(mUser);
+		} else {
+//			mUser = (User) getIntent().getSerializableExtra("sign_in_user"); 
+			Log.d("debug", " no selected user prifile is passed  -  " + TAG);
+		} 	
+		
 	}
 
 	private void loadProfile() {
-		Log.d("debug", "loadProfile()  - ProfileActivity.java");
+		Log.d("debug", "loadProfile()  -  " + TAG);
          TwitterApp.getRestClient().getMyInfo(
         		 new JsonHttpResponseHandler() {
         			@Override
         			public void onSuccess(JSONObject jsonObject) {
         				User u = User.fromJSON(jsonObject);
-        				getActionBar().setTitle("@" +  u.getScreenName());
-        				populateProifleHeader(u);
+        				mUser = u;
+//        				getActionBar().setTitle("@" +  u.getScreenName());
+//        				populateProifleHeader(u);
         			} 
         		 });		
 	}
@@ -49,5 +81,19 @@ public class ProfileActivity extends FragmentActivity {
 		ImageLoader.getInstance().displayImage(user.getProfileImageUrl(), ivProfileImage);
 		
 	}
+	
+	@Override 
+	public void onNewUserProfileCreated() {
+		Log.d("debug", TAG + " onProfileImageClicked ");
+		 
+	}
+	
+	// show another twitter's profile
+	// No action when profile image is clicked when in your profile
+	@Override
+	public void onProfileImageClicked(User selectedUser) {
+		
+	}
+
 }
 

@@ -40,29 +40,8 @@ public class HomeTimelineFragment extends TweetsListFragment {
 //	        });
 		
 	}
- 	
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		
-		Log.d("debug", TAG + "position= " + position);
-		Toast.makeText(getActivity(), "click profile image", Toast.LENGTH_SHORT).show();
-//	    super.onListItemClick(l, v, position, id);
-//
-//	    Intent intent = new Intent(this, Detail.class);
-//	    intent.putExtra("test", "test");
-//	    startActivity(intent);
-	}
-	
-	
-	protected void onListItemClick( View v ) {
-		
-		Log.d("debug", TAG + "position= ?");
-		Toast.makeText(getActivity(), "click profile image", Toast.LENGTH_SHORT).show();
-//	    super.onListItemClick(l, v, position, id);
-//
-//	    Intent intent = new Intent(this, Detail.class);
-//	    intent.putExtra("test", "test");
-//	    startActivity(intent);
-	}
+  
+ 
 	private void populateTimeline() {
 		Log.d("debug", "populateTimeline()- TimelineActivity.java");
         client.getHomeTimeline(new JsonHttpResponseHandler() {
@@ -118,27 +97,6 @@ public class HomeTimelineFragment extends TweetsListFragment {
 		});
 
 	}
-	
-//	private void getAndDisplayMoreTimeline() {
-//		Log.d("debug", "populateTimeline()- TimelineActivity.java");
-//        client.getHomeTimeline(sinceId, maxId, new JsonHttpResponseHandler() {
-//        	@Override
-//        	public void onSuccess(int arg0, JSONArray jsonArray) {
-//        		super.onSuccess(arg0, jsonArray);
-////        		aTweets.addAll(Tweet.fromJSONArray(jsonArray));
-//        		addAll(Tweet.fromJSONArray(jsonArray));
-//        		Log.d("debug", "arg0=" + arg0);
-//		        Log.d("debug", jsonArray.toString());
-//        	}
-//        	
-//        	@Override
-//        	public void onFailure( Throwable e, String s) {
-//        		Log.d("debug", e.toString());
-//        		Log.d("debug", s.toString());
-//        	}
-//        });	
-//		
-//	}
 	
 
 }

@@ -74,8 +74,8 @@ public class TwitterClient extends OAuthBaseClient {
 		Log.d("debug", "getMyInfo()  - TwitterClient.java");
 		String apiUrl = getApiUrl("account/verify_credentials.json");
 		client.get(apiUrl, null, handler);  
-		
 	}
+	
 	public void getUserTimeline(AsyncHttpResponseHandler handler) {
 		Log.d("debug", "getUserTimeline()  - TwitterClient.java");
 		String apiUrl = getApiUrl("statuses/user_timeline.json");
@@ -93,9 +93,6 @@ public class TwitterClient extends OAuthBaseClient {
 		Log.d("debug", "postUpdate()- aft client.get");
 	}
 
-
-	
-	
 	
 	// CHANGE THIS
 	// DEFINE METHODS for different API endpoints here
