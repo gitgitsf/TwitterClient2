@@ -51,10 +51,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
         		addAll(Tweet.fromJSONArray(json));
 //        		fragmentTweetsList.addAll(Tweet.fromJSONArray(json));
 //        		aTweets.addAll(Tweet.fromJSONArray(json));
-        		Log.d("debug", "arg0=" + arg0);
-		        Log.d("debug", json.toString());
         	}
-        	
         	
         	@Override
         	public void onFailure( Throwable e, String s) {
@@ -85,8 +82,6 @@ public class HomeTimelineFragment extends TweetsListFragment {
 				super.onSuccess(arg0, jsonArray);
 				// aTweets.addAll(Tweet.fromJSONArray(jsonArray));
 				addAll(Tweet.fromJSONArray(jsonArray));
-				Log.d("debug", "arg0=" + arg0);
-				Log.d("debug", jsonArray.toString());
 			}
 
 			@Override

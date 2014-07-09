@@ -2,45 +2,55 @@ package com.codepath.apps.basictwitter.fragments;
 
 import org.json.JSONArray;
 
-import com.codepath.apps.basictwitter.TwitterApp;
-import com.codepath.apps.basictwitter.TwitterClient;
-import com.codepath.apps.basictwitter.fragments.TweetsListFragment.OnFragmentTweetsListItemSelectedListener;
-import com.codepath.apps.basictwitter.models.Tweet;
-import com.codepath.apps.basictwitter.models.User;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.codepath.apps.basictwitter.TwitterApp;
+import com.codepath.apps.basictwitter.TwitterClient;
+import com.codepath.apps.basictwitter.models.Tweet;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class UserTimelineFragment extends TweetsListFragment {
 	
+	public static final String  TAG = "UserTimelineFragment";
 	private TwitterClient client;
-	
 	OnProfileChangedListener profileListener;
 	
-	 public interface OnProfileChangedListener {
-		   public void onNewUserProfileCreated( );
-	   }
-
+	String mScreenName;
+	
+	
+	public interface OnProfileChangedListener {
+		public void onNewUserProfileCreated();
+		public String getScreenName();
+	}
+ 
+	 
+	@Override 
+	public void onActivityCreated(Bundle state) {
+		super.onActivityCreated(state);
+		// get the activity with getActivity()
+		Log.d("debug", "OnActivityCreated fired");
+	} 
+		 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d("debug", "onCreate()- " + TAG);
 		client = TwitterApp.getRestClient();
-		profileListener.onNewUserProfileCreated( );
+		// Have the activity 
+		
 		populateTimeline();
 	}
 
 	private void populateTimeline() {
-		Log.d("debug", "populateTimeline()- MentionTimelineFragment.java");
-		client.getUserTimeline(new JsonHttpResponseHandler() {
+		Log.d("debug", "populateTimeline()- " + TAG);
+		client.getUserTimeline(mScreenName, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(int arg0, JSONArray json) {
 				super.onSuccess(arg0, json);
 				addAll(Tweet.fromJSONArray(json));
-				Log.d("debug", json.toString());
+				Log.d("debug", "populateTimeline()" + TAG + "json==>" + json.toString());
 			}
 
 			@Override
@@ -56,8 +66,11 @@ public class UserTimelineFragment extends TweetsListFragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		Log.d("debug", "onAttach()- " + TAG);
 		if (activity instanceof OnProfileChangedListener) {
 			profileListener = (OnProfileChangedListener) activity;
+			profileListener.onNewUserProfileCreated( );
+			mScreenName = profileListener.getScreenName( );
 		} else {
 			throw new ClassCastException(
 					activity.toString()

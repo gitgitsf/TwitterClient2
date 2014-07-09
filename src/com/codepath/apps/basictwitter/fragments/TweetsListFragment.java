@@ -31,10 +31,10 @@ public class TweetsListFragment extends Fragment  {
 	protected ListView lvTweets;
 	private long sinceId=1;
 	private long maxId =1;
-//	private TwitterClient client;
 	
 	ImageView ivProfileImage;
 	OnFragmentTweetsListItemSelectedListener fragmentListener; //interface
+	protected String mScreenName;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,18 +57,12 @@ public class TweetsListFragment extends Fragment  {
 					long id) {
 				 //sent the Tweet object to Activity
 				Log.d("debug", TAG + " onItemClick ");
-//				Tweet selectedTweet = new Tweet();
-//				selectedTweet =	tweets.get(position);
 				User selectedUser = new User();
-//				selectedUser =  selectedTweet.getUser();
 				selectedUser =  tweets.get(position).getUser();
+				mScreenName = selectedUser.getScreenName();
 				Log.d("debug", TAG + " selected tweet position is==>" +  position);
-//				Toast.makeText(getActivity(), "fr fragment -click profile image", Toast.LENGTH_SHORT).show();
 				fragmentListener.onProfileImageClicked(selectedUser);
-//				fragmentListener.onProfileImageClicked(selectedTweet);
-				
 			}
-			
 		}); 
  
 //		
@@ -80,9 +74,6 @@ public class TweetsListFragment extends Fragment  {
 //				
 //			}
 //		}); 
-	
-		
-		 
 	 
 //		lvTweets.setOnScrollListener(new EndlessScrollListener() {
 //		    @Override
@@ -123,10 +114,6 @@ public class TweetsListFragment extends Fragment  {
 	// Fragment can fire listener events on an activity via an interface
 	public interface OnFragmentTweetsListItemSelectedListener {
 		public void onProfileImageClicked(User userJsonObject);  
-//		public void onProfileImageClicked(Tweet tweetJsonObject);  
-
-
 	}
 	
- 
 }

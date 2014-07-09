@@ -28,6 +28,8 @@ public class TimelineActivity extends FragmentActivity implements
 	// private final String TAG = this.getClass().getName();
 	private final String TAG = "TimelineActivity";
 	protected User mUser;
+	private final String KEY_SCREEN_NAME="screen_name";
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,25 +70,32 @@ public class TimelineActivity extends FragmentActivity implements
 	}
 
 	public void onProifleView(MenuItem mi) {
-		Log.d("DEBUG", "onProifleView");
-		loadProfile();
-		Intent i = new Intent(TimelineActivity.this, ProfileActivity.class);
-		// ? getMyInfo not working
-		// it was fine in ProfileActivity
-		i.putExtra("sign_in_user", mUser);
-		startActivity(i);
+		Log.d("debug", "onProifleView() " + TAG);
+		loadProfileAndStartProfileActity();
 	}
 
-	private void loadProfile() {
-		Log.d("debug", "loadProfile()  - TimelineActivity ");
+	private void loadProfileAndStartProfileActity() {
+		Log.d("debug", "loadProfile()  - " + TAG);
 		TwitterApp.getRestClient().getMyInfo(new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject jsonObject) {
 				User u = User.fromJSON(jsonObject);
-				mUser = u;
-				Log.d("debug", TAG + "return from getMyInfo" + mUser.toString());
+				setUser(u);
+				callProfileActivity();
 			}
 		});
+	}
+	
+	protected void setUser(User user) {
+		Log.d("debug", "setUser()  - " + TAG);
+		mUser = user;
+	}
+	
+	protected void callProfileActivity( ) {
+		Log.d("debug", "callProfileActivity()  - " + TAG);
+		Intent i = new Intent(TimelineActivity.this, ProfileActivity.class);
+		i.putExtra("sign_in_user", mUser);
+		startActivity(i);
 	}
 
 	// Inflate the menu; this adds items to the action bar if it is present.
@@ -104,7 +113,6 @@ public class TimelineActivity extends FragmentActivity implements
 		case R.id.action_compose_tweet:
 			startActivityForResult(new Intent(TimelineActivity.this,
 					ComposeTweetActivity.class), GET_RESULT_TEXT);
-
 			return true;
 		case R.id.action_settings:
 			return true;
@@ -117,8 +125,8 @@ public class TimelineActivity extends FragmentActivity implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 0) {
 			if (resultCode == RESULT_OK) {
-				String returnData = data.getStringExtra("myNewTweet");
-//				Toast.makeText(this, returnData, Toast.LENGTH_SHORT).show();
+     			String returnData = data.getStringExtra("myNewTweet");
+     			Log.d("debug", "onActivityResult()  - " + TAG + "tweet data= " +returnData);
 			}
 		}
 	}
@@ -127,8 +135,9 @@ public class TimelineActivity extends FragmentActivity implements
 	@Override
 	public void onProfileImageClicked(User selectedUser) {
 		// public void onProfileImageClicked(Tweet selectedTweet) {
-		Log.d("debug", TAG + " onProfileImageClicked ");
+		Log.d("debug",  "onProfileImageClicked() " + TAG);
 		Intent i = new Intent(this, ProfileActivity.class);
+		i.putExtra(KEY_SCREEN_NAME, selectedUser.getScreenName());
 		i.putExtra("selected_tweet_user", selectedUser);
 		startActivity(i);
 	}

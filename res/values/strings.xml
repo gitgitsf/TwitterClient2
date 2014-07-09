@@ -16,6 +16,6 @@
     <string name="action_compose_tweet">Compose tweet</string>
     <string name="new_tweet_hint">new tweet</string>
     <string name="title_activity_Profile">Profile</string>
-    
+    <string name="title_activity_my_profile">MyProfileActivity</string>
 
 </resources>

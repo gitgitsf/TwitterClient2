@@ -101,7 +101,7 @@ public class ComposeTweetActivity extends Activity {
 	}
 	
 
-	private void sendToTwitter(String myNewTweet) {
+	private void sendToTwitter(final String myNewTweet) {
 		Log.d("debug", "sendToTwitter() ");
         client.postUpdate(myNewTweet,  new JsonHttpResponseHandler() {
         	@Override
@@ -113,7 +113,7 @@ public class ComposeTweetActivity extends Activity {
 				// to have TimelineActivity to start intent with result and have this activity
 				// return with result.
 	            Intent i = new Intent();
-				i.putExtra("myNewTweet", "is posted successful");
+				i.putExtra("myNewTweet", myNewTweet);
 				setResult(RESULT_OK, i);
 				finish(); 
 			}	

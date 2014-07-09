@@ -73,14 +73,15 @@ public class TwitterClient extends OAuthBaseClient {
 	public void getMyInfo(AsyncHttpResponseHandler handler) {
 		Log.d("debug", "getMyInfo()  - TwitterClient.java");
 		String apiUrl = getApiUrl("account/verify_credentials.json");
-		client.get(apiUrl, null, handler);  
+		client.get(apiUrl, handler);  
 	}
 	
-	public void getUserTimeline(AsyncHttpResponseHandler handler) {
+	public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler) {
 		Log.d("debug", "getUserTimeline()  - TwitterClient.java");
+		RequestParams params = new RequestParams();
+		params.put("screen_name", screenName);
 		String apiUrl = getApiUrl("statuses/user_timeline.json");
-		client.get(apiUrl, null, handler);  
-		
+		client.get(apiUrl, params, handler);  
 	}
 	
 	// post a new tweet to Twitter
@@ -90,7 +91,6 @@ public class TwitterClient extends OAuthBaseClient {
 		RequestParams params = new RequestParams();
 		params.put("status", myNewTweet);
 		client.post(apiUrl, params, handler);
-		Log.d("debug", "postUpdate()- aft client.get");
 	}
 
 	

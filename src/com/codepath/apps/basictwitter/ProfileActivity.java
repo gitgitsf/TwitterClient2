@@ -23,52 +23,31 @@ public class ProfileActivity extends FragmentActivity
 	private final String TAG = "ProfileActivity";
 	
 	User mUser;
+	String mScreenName;
 
 	@Override
 	protected void onCreate(Bundle saveInstBundle) {
 		super.onCreate(saveInstBundle);
 		Log.d("debug", "onCreate()  - " + TAG);
 		setContentView(R.layout.activity_profile);
-		
-		checkForAnotherTwitterUser();
-		loadProfile();
-		
-//		populateProifleHeader(mUser);
+//		mScreenName = getIntent().getStringExtra("screen_name"); 
+//		checkForTwitterUser();
+		populateProifleHeader(mUser);
 	}
 	
 	
-	private void checkForAnotherTwitterUser() {
-		Log.d("debug", "checkForAnotherTwitterUser()  - " + TAG);
-		
+	private void checkForTwitterUser() {
+		Log.d("debug", "checkForTwitterUser()  - " + TAG);
 		User tweetUser = (User) getIntent().getSerializableExtra("selected_tweet_user"); 
 		if (tweetUser != null) {
-			Log.d("debug", " selected user prifile is passed  -  " + TAG);
 			mUser = tweetUser;
-			getActionBar().setTitle("@" +  mUser.getScreenName());
-			populateProifleHeader(mUser);
 		} else {
-//			mUser = (User) getIntent().getSerializableExtra("sign_in_user"); 
-			Log.d("debug", " no selected user prifile is passed  -  " + TAG);
+			mUser = (User) getIntent().getSerializableExtra("sign_in_user"); 
 		} 	
-		
 	}
-
-	private void loadProfile() {
-		Log.d("debug", "loadProfile()  -  " + TAG);
-         TwitterApp.getRestClient().getMyInfo(
-        		 new JsonHttpResponseHandler() {
-        			@Override
-        			public void onSuccess(JSONObject jsonObject) {
-        				User u = User.fromJSON(jsonObject);
-        				mUser = u;
-//        				getActionBar().setTitle("@" +  u.getScreenName());
-//        				populateProifleHeader(u);
-        			} 
-        		 });		
-	}
-
+ 
 	protected void populateProifleHeader(User user) {
-		
+		Log.d("debug", "populateProifleHeader()  - " + TAG);
 		TextView tvName = (TextView) findViewById(R.id.tvName);
 		TextView tvTagline = (TextView) findViewById(R.id.tvTagline);
 		TextView tvFollowers = (TextView) findViewById(R.id.tvFollowers);
@@ -80,11 +59,19 @@ public class ProfileActivity extends FragmentActivity
 		tvFollowing.setText(user.getFriendsCount() + " Following");
 		ImageLoader.getInstance().displayImage(user.getProfileImageUrl(), ivProfileImage);
 		
+		getActionBar().setTitle("@" +  user.getScreenName());
+		mScreenName = user.getScreenName();
+	}
+	
+	public String getScreenName() {
+		return mScreenName;
 	}
 	
 	@Override 
 	public void onNewUserProfileCreated() {
-		Log.d("debug", TAG + " onProfileImageClicked ");
+		Log.d("debug", TAG + " onNewUserProfileCreated ");
+		checkForTwitterUser();
+		mScreenName = mUser.getScreenName(); 
 		 
 	}
 	
@@ -92,6 +79,7 @@ public class ProfileActivity extends FragmentActivity
 	// No action when profile image is clicked when in your profile
 	@Override
 	public void onProfileImageClicked(User selectedUser) {
+		Log.d("debug", TAG + " onProfileImageClicked ");
 		
 	}
 
